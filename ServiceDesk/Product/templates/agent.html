@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Agent</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function(){
+  			$("#Available_button").click(function(){
+    			$("#Available_Table").toggle();
+  			});
+  			$("#Maintenance_button").click(function(){
+    			$("#Maintenance_Table").toggle();
+  			});
+  			$("#Closed_button").click(function(){
+    			$("#Closed_Table").toggle();
+  			});
+		});
+</script>
+	</head>
+<body>
+<!-- Count Number -->
+<button id="Available_button">Total Available Ticket - {{Avail_Number}}</button>
+<br>
+<button id="Maintenance_button">Total Maintenance Ticket - {{Closed_Number}}</button>
+<br>
+<button id="Closed_button">Total Closed Ticket -{{Maintenance_Number}}</button>
+<br>
+
+<!-- Available ticket table-->
+<br>
+<div id = "Available_Table" style="display:none">
+
+<b><center>Available</b></center>
+{% for Ticket_Instance in Ticket_Instances %}
+	{% if Ticket_Instance.status == 'A' %} 
+		<table style="width:80%">
+			<tr>
+			    <th>id</th>
+			    <th>subject</th>
+			    <th>Agent</th>
+			    <th>summary</th>
+			    <th>bill_number</th>
+			    <th>ticket_severity</th>
+			    <th>Borrower</th>
+		  	</tr>
+			{% for Ticket in Tickets %}
+				{% if  Ticket.id == Ticket_Instance.ticket_id %}
+					
+			<tr>
+				<td><center>{{ Ticket.id }}</td></center>
+				<td><center>{{ Ticket.Subject }}</td> </center>
+				<td><center>{{ Ticket.Agent }}</td> </center>
+				<td><center>{{ Ticket.summary }}</td> </center>
+				<td><center>{{ Ticket.bill_number }}</td> </center>
+				<td><center>{{ Ticket.ticket_severity }}</td></center>
+				{% endif %}
+					{% endfor %}
+				<td><center>	
+					<form method="POST">
+						<select name="item_id">
+						{% for User in Users %}
+
+    						<option>{{ User }}</option>
+							}
+						{% endfor %}
+						</select>
+					</center>
+					</form>
+				</td>
+
+			</tr>
+				
+		</table>
+	{% endif %}
+{% endfor %}
+
+
+<!-- Maintenance Table -->
+</div>
+<div id = "Maintenance_Table" style="display:none">
+
+<br><br><br><br>
+<b><center>Maintenance</b></center>
+{% for Ticket_Instance in Ticket_Instances %}
+	{% if Ticket_Instance.status == 'M' %} 
+		<table style="width:80%">
+			<tr>
+			    <th>id</th>
+			    <th>subject</th>
+			    <th>Agent</th>
+			    <th>summary</th>
+			    <th>bill_number</th>
+			    <th>ticket_severity</th>
+			    <th>borrower</th>
+		  	</tr>
+			{% for Ticket in Tickets %}
+				{% if  Ticket.id == Ticket_Instance.ticket_id %}
+					
+					<tr>
+						<td><center>{{ Ticket.id }}</center></td>
+					 	<td><center>{{ Ticket.Subject }} </center></td>
+					 	<td><center>{{ Ticket.Agent }} </center></td>
+					 	<td><center>{{ Ticket.summary }} </center></td>
+					 	<td><center>{{ Ticket.bill_number }} </center></td>
+					 	<td><center>{{ Ticket.ticket_severity }} </center></td>
+					 	<td><center>{{ Ticket_Instance.borrower}}</center></td>
+				 	</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endfor %}
+</div>
+
+<!-- Closed Table -->
+<div id = "Closed_Table" style="display:none">
+<br><br><br><br>
+<center><b>Closed</b></center>
+{% for Ticket_Instance in Ticket_Instances %}
+	{% if Ticket_Instance.status == 'C' %} 
+		<table style="width:80%">
+			<tr>
+			    <th>id</th>
+			    <th>subject</th>
+			    <th>Agent</th>
+			    <th>summary</th>
+			    <th>bill_number</th>
+			    <th>ticket_severity</th>
+			    <th>borrower</th>
+		  	</tr>
+			{% for Ticket in Tickets %}
+				{% if  Ticket.id == Ticket_Instance.ticket_id %}
+					 
+					<tr>
+						<td><center>{{ Ticket.id }}</center></td>
+					 	<td><center>{{ Ticket.Subject }}</center></td>
+					 	<td><center>{{ Ticket.Agent }}</center></td>
+					 	<td><center>{{ Ticket.summary }}</center></td>
+					 	<td><center>{{ Ticket.bill_number }}</center></td>
+					 	<td><center>{{ Ticket.ticket_severity }}</center></td>
+					 	<td><center><option value="{{ Ticket_Instance.id }}">{{ Ticket_Instance.borrower}}</option></center></td>
+				 	</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	{% endif %}
+{% endfor %}
+
+</div>
+</body>
+</html>
